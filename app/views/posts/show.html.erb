@@ -1,0 +1,79 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @post.name %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @post.title %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @post.content %>
+</p>
+
+<div class="container-lg" style="margin-bottom: 1%">
+  <strong>Image:</strong>
+  <img class=".img_show" src="<%= @post.image %>" class="img-fluid" style=" width: 80%; max-height: 80%;">
+</div>
+
+<%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-info', role: "button", style: "color: white" %> |
+<%= link_to 'Back', posts_path, class: 'btn btn-secondary', role: "button", style: "color: white" %>
+<hr>
+<h2>Comments</h2>
+<input type="checkbox">
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Author</th>
+    <th scope="col">Text</th>
+    <th scope="col">Time</th>
+    <th scope="col">Vievs</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @post.comments.each do |post| %>
+    <tr>
+      <td><%= post.body%></td>
+
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+
+<hr>
+<%= form_for ([@post, @post.comments.build]) do |form|%>
+  <%= form.label :name%>
+ <select name="comment[user_id]" id="comment_user_id" class="form-control">
+
+  <option value="1"><%=Author.first.first_name + " " + Author.first.last_name %></option>
+  <option value="2"><%=Author.second.first_name + " " + Author.second.last_name %></option>
+  <option value="3"><%=Author.third.first_name + " " + Author.third.last_name %></option>
+  <option value="4"><%=Author.fourth.first_name + " " + Author.fourth.last_name %></option>
+  <option value="5"><%=Author.fifth.first_name + " " + Author.fifth.last_name %></option>
+  </select>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_area :body, class: "form-control"  %>
+  </div>
+
+  <%= form.submit("Add comment", {:class => 'btn btn-success'}) %>
+<% end %>
+
+<% @comments.each do |comment| %>
+  <div id="comment-<%= comment.id %>">
+    <%= comment.body %>
+    <%= link_to "Delete", post_comment_path(comment.post, comment), method: :delete, remote: true  %>
+    <br>
+  </div>
+
+
+<% end %>
